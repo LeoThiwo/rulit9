@@ -1,0 +1,2087 @@
+
+<!-- Линия 1646-->
+<!doctype html>
+<html lang="ru">
+<head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src https://gc.kis.v2.scr.kaspersky-labs.com wss://gc.kis.v2.scr.kaspersky-labs.com data: blob:; style-src https://gc.kis.v2.scr.kaspersky-labs.com wss://gc.kis.v2.scr.kaspersky-labs.com 'unsafe-inline'; script-src https://gc.kis.v2.scr.kaspersky-labs.com wss://gc.kis.v2.scr.kaspersky-labs.com 'unsafe-inline'; font-src data:; media-src data: blob:; form-action 'none'; base-uri 'none' connect-src https://gc.kis.v2.scr.kaspersky-labs.com wss://gc.kis.v2.scr.kaspersky-labs.com;child-src https://gc.kis.v2.scr.kaspersky-labs.com wss://gc.kis.v2.scr.kaspersky-labs.com;frame-src https://gc.kis.v2.scr.kaspersky-labs.com wss://gc.kis.v2.scr.kaspersky-labs.com;"><meta name="viewport" content="width=device-width, initial-scale=1"><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=JeMgNq8pDkvUXPe0bDKhsRZ9TUYZkX-GYFJfge5nEl695vT-ipEzHzg3TZN9WaexBJvvOB4fkNHPexr30UKu5vKfErlNmmvKMGGIUyy74QiAYHm82GMnmJ2oVU5W13IraWv367-yKccwWBGg6-21Vo50kTbVuNR3zARraZnjHCQwnKLfQV7__EF-ovwMjnekNWa-NtZtjtXoAqhwL9LBEhvGbgxBs7tAs9hfgRWgT8zaAnqVettZlLTEBUsWVvL5WkLEYXRhnMseODlFnV7u0oT9iL-iESkzmx3ZHHr5iJCqIOw1EwNGHKDzGsKRnB4ybgHrktRbXlTTfZCzSrpEbRgD9tTXstFiGWunQV6uPIHvNHulVAotMoPiS-t2CUaxFpMk2_KprJ2BH3ziQj_OFn89qOzAkp69RD0RHZEa6gsDqIDmP8JFMRguxQiV-BKt6Q-stwRFLD9GBabaS4hjEQ" charset="UTF-8"></script><style>
+
+:root {
+  --oi-page: #f6f6f6;          /* фон страницы — как в кабинете */
+  --oi-page-hover: #e8e8e8;
+  --oi-surface: #ffffff;       /* панели: правила, карточки, HUD */
+  --oi-surface-hover: #ececec;
+  --oi-ink: #000000;
+  --oi-ink-sub: #757575;
+  --oi-brand: #b8269c;         /* акцент, используется редко */
+  --oi-line: rgba(0, 0, 0, 0.08);
+  --oi-ok: #72ea4e;
+  --oi-ok-text: #35a413;
+  --oi-err: #ea604e;
+  --oi-radius: 20px;           /* карточки */
+  --oi-radius-sm: 6px;         /* чипы и мелкие плашки */
+  --oi-radius-btn: 999px;      /* кнопки — таблетки, как на сайте */
+  --oi-gap: 16px;
+
+
+  --oi-scene-glow: 0.05;     /* свечение акцентом сверху */
+  --oi-scene-grid: 0.028;    /* тонкая сетка-фактура */
+  --oi-scene-vignette: 0.05; /* лёгкое затемнение к краям */
+}
+
+* { box-sizing: border-box; }
+
+html {
+  background: var(--oi-page);
+  /* На проекторе артефакт смотрят с задней парты — база крупнее обычной. */
+  font-size: 17px;
+  -webkit-text-size-adjust: 100%;
+
+  scrollbar-gutter: stable;
+}
+
+
+html.oi-embedded { scrollbar-gutter: auto; }
+
+body {
+  margin: 0;
+  padding: clamp(12px, 3vw, 32px);
+  background: var(--oi-page);
+  color: var(--oi-ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+
+  min-height: 100vh;
+}
+
+html.oi-embedded body { min-height: 0; }
+
+.oi-root {
+  max-width: 860px;
+  margin: 0 auto;
+  /* Контент лежит НАД слоем сцены. */
+  position: relative;
+  z-index: 1;
+}
+
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 50% -15%,
+      color-mix(in srgb, var(--oi-brand) calc(var(--oi-scene-glow) * 100%), transparent),
+      transparent 62%),
+    radial-gradient(80% 60% at 105% 105%,
+      color-mix(in srgb, var(--oi-brand) calc(var(--oi-scene-glow) * 55%), transparent),
+      transparent 70%),
+    repeating-linear-gradient(0deg,
+      rgba(128, 128, 128, var(--oi-scene-grid)) 0 1px, transparent 1px 46px),
+    repeating-linear-gradient(90deg,
+      rgba(128, 128, 128, var(--oi-scene-grid)) 0 1px, transparent 1px 46px),
+    radial-gradient(120% 100% at 50% 35%,
+      transparent 45%, rgba(0, 0, 0, var(--oi-scene-vignette)) 100%);
+}
+
+@media print {
+  body::before { display: none; }
+}
+
+
+body.oi-cover .oi-root { max-width: 680px; }
+
+html:not(.oi-embedded) body.oi-cover .oi-root {
+  min-height: calc(100vh - 2 * clamp(12px, 3vw, 32px));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.oi-cover-emblem {
+  width: clamp(52px, 9vw, 68px);
+  margin: 0 auto clamp(14px, 3vw, 20px);
+  color: var(--oi-brand);
+  opacity: 0.9;
+}
+
+.oi-cover-emblem svg { display: block; width: 100%; height: auto; }
+
+body:not(.oi-cover) .oi-cover-emblem { display: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .oi-cover-emblem { animation: oi-badge-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+}
+
+body.oi-cover .oi-title {
+  text-align: center;
+  font-size: clamp(1.9rem, 5.5vw, 3rem);
+  margin-bottom: 8px;
+}
+
+body.oi-cover .oi-subtitle {
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: clamp(18px, 4vw, 30px);
+}
+
+body.oi-cover #intro,
+body.oi-cover #setup {
+
+  box-shadow: 0 18px 40px -30px rgba(0, 0, 0, 0.5);
+}
+
+
+body.oi-cover #intro > .oi-question,
+body.oi-cover #setup > .oi-question {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--oi-ink-sub);
+  margin-bottom: 10px;
+}
+
+
+body.oi-cover #intro #start,
+body.oi-cover #setup #start {
+  width: 100%;
+  min-height: 54px;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+
+body.oi-cover #intro > div:last-child,
+body.oi-cover #setup > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: stretch;
+}
+
+
+.oi-title {
+  font-family: 'Golos Text', Inter, sans-serif;
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0 0 4px;
+}
+
+.oi-subtitle {
+  color: var(--oi-ink-sub);
+  font-size: 0.95rem;
+  margin: 0 0 var(--oi-gap);
+}
+
+.oi-question {
+  font-size: clamp(1.1rem, 2.6vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0 0 var(--oi-gap);
+}
+
+
+.oi-card {
+  background: var(--oi-surface);
+  border-radius: var(--oi-radius);
+  padding: clamp(16px, 3vw, 28px);
+  margin-bottom: var(--oi-gap);
+}
+
+
+.oi-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: var(--oi-gap);
+}
+
+.oi-progress-track {
+  flex: 1;
+  height: 8px;
+  background: var(--oi-page-hover);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.oi-progress-fill {
+  height: 100%;
+  width: 0;
+  background: var(--oi-ink);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.oi-progress-label {
+  color: var(--oi-ink-sub);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+
+.oi-btn {
+  appearance: none;
+  border: none;
+  border-radius: var(--oi-radius-btn);
+  padding: 12px 24px;
+  font: inherit;
+  font-weight: 500;
+  background: var(--oi-ink);
+  color: #fff;
+  cursor: pointer;
+
+  min-height: 44px;
+  transition: opacity 0.15s ease, background 0.15s ease, transform 0.08s ease;
+}
+
+.oi-btn:hover { opacity: 0.85; }
+
+.oi-btn:active:not(:disabled) { transform: translateY(1px) scale(0.99); }
+.oi-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+
+.oi-btn--ghost {
+
+  background: var(--oi-surface);
+  border: 1px solid var(--oi-page-hover);
+  color: var(--oi-ink);
+  font-weight: 500;
+  padding: 11px 23px;
+}
+
+.oi-btn--ghost:hover { background: var(--oi-page); border-color: var(--oi-ink-sub); opacity: 1; }
+
+
+
+.oi-options {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.oi-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  appearance: none;
+
+  background: var(--oi-page);
+  border: 1px solid var(--oi-page-hover);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font: inherit;
+  color: var(--oi-ink);
+  cursor: pointer;
+  min-height: 52px;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.oi-option:hover:not(:disabled) {
+  background: var(--oi-page-hover);
+  border-color: var(--oi-ink-sub);
+}
+.oi-option:disabled { cursor: default; }
+
+
+.oi-option.is-correct {
+  border-color: var(--oi-ok-text);
+  background: color-mix(in srgb, var(--oi-ok) 18%, var(--oi-surface));
+}
+
+.oi-option.is-wrong {
+  border-color: var(--oi-err);
+  background: color-mix(in srgb, var(--oi-err) 12%, var(--oi-surface));
+}
+
+.oi-option.is-muted { opacity: 0.5; }
+
+
+
+.oi-feedback {
+  border-radius: var(--oi-radius-sm);
+  padding: 14px 18px;
+  margin-top: 12px;
+  font-size: 0.95rem;
+  background: var(--oi-page);
+}
+
+.oi-feedback--ok { background: color-mix(in srgb, var(--oi-ok) 18%, var(--oi-page)); }
+.oi-feedback--err { background: color-mix(in srgb, var(--oi-err) 12%, var(--oi-page)); }
+
+.oi-feedback-verdict { font-weight: 600; display: block; margin-bottom: 2px; }
+.oi-feedback--ok .oi-feedback-verdict { color: var(--oi-ok-text); }
+.oi-feedback--err .oi-feedback-verdict { color: var(--oi-err); }
+
+
+.oi-result {
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+
+@media (prefers-reduced-motion: no-preference) {
+  .oi-result { animation: oi-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+}
+
+@keyframes oi-rise {
+  from { opacity: 0; transform: translateY(18px) scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+
+.oi-result-badge {
+  width: clamp(96px, 22vw, 128px);
+  margin: 4px auto 6px;
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.28));
+}
+.oi-result-badge svg { display: block; width: 100%; height: auto; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .oi-result-badge { animation: oi-badge-pop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.08s both; }
+}
+@keyframes oi-badge-pop {
+  0%   { opacity: 0; transform: scale(0.3) rotate(-14deg); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform: none; }
+}
+
+.oi-result-score {
+  font-family: 'Golos Text', Inter, sans-serif;
+  font-size: clamp(2.5rem, 9vw, 4rem);
+  line-height: 1;
+  margin: 6px 0 4px;
+  font-variant-numeric: tabular-nums;
+}
+.oi-result-score .oi-count { font-variant-numeric: tabular-nums; }
+
+.oi-result-verdict {
+  color: var(--oi-ink-sub);
+  margin-bottom: 20px;
+  font-size: 1.05rem;
+}
+
+
+
+.oi-podium {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(8px, 3vw, 18px);
+  min-height: 168px;
+  margin: 10px auto 6px;
+  max-width: 460px;
+}
+.oi-podium-col { display: flex; flex-direction: column; align-items: center; flex: 1 1 0; min-width: 0; }
+.oi-podium-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.oi-podium-crown { font-size: 1.5rem; line-height: 1; margin-bottom: 2px; height: 1.5rem; }
+.oi-podium-bar {
+  width: 100%;
+  border-radius: 12px 12px 0 0;
+  background: linear-gradient(180deg, var(--oi-surface-hover), var(--oi-surface));
+  border: 1px solid rgba(128, 128, 128, 0.22);
+  border-bottom: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 8px;
+  height: 0;
+  transition: height 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.oi-podium-bar-score {
+  font-family: 'Golos Text', Inter, sans-serif;
+  font-size: 1.35rem;
+  font-variant-numeric: tabular-nums;
+}
+.oi-podium-col.is-first .oi-podium-bar {
+
+  background: linear-gradient(180deg, color-mix(in srgb, var(--oi-brand) 30%, var(--oi-surface)), var(--oi-surface));
+  border-color: color-mix(in srgb, var(--oi-brand) 60%, transparent);
+  box-shadow: 0 0 26px color-mix(in srgb, var(--oi-brand) 34%, transparent),
+              inset 0 3px 0 var(--oi-brand);
+}
+.oi-podium-col.is-first .oi-podium-bar-score { color: var(--oi-ink); }
+.oi-podium-place { font-size: 0.72rem; color: var(--oi-ink-sub); margin-top: 4px; }
+
+.oi-result-review {
+  text-align: left;
+  margin-top: 24px;
+  border-top: 1px solid var(--oi-page-hover);
+  padding-top: 16px;
+}
+
+.oi-result-review-title {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--oi-ink-sub);
+  margin: 0 0 8px;
+}
+
+
+.oi-result-brand {
+  margin-top: 22px;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--oi-ink-sub);
+  opacity: 0.6;
+}
+.oi-result-brand b { font-family: 'Golos Text', Inter, sans-serif; font-weight: 400; letter-spacing: 0.02em; }
+
+
+.oi-confetti {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.oi-review-item {
+  display: flex;
+  gap: 10px;
+  padding: 10px 0;
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--oi-page);
+}
+
+.oi-review-mark { flex: none; font-weight: 700; }
+.oi-review-item.is-correct .oi-review-mark { color: var(--oi-ok-text); }
+.oi-review-item.is-wrong .oi-review-mark { color: var(--oi-err); }
+
+
+.oi-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: 10px;
+  margin-bottom: var(--oi-gap);
+}
+
+.oi-tile {
+  appearance: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 76px;
+  padding: 12px 10px;
+  background: var(--oi-surface);
+  border: 2px solid var(--oi-page-hover);
+  border-radius: var(--oi-radius-sm);
+  font: inherit;
+  font-weight: 600;
+  color: var(--oi-ink);
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.oi-tile:hover:not(:disabled):not(.is-used) {
+  background: var(--oi-page-hover);
+  transform: translateY(-2px);
+}
+
+.oi-tile.is-used,
+.oi-tile:disabled {
+  background: var(--oi-page);
+  border-color: transparent;
+  color: var(--oi-ink-sub);
+  cursor: default;
+  transform: none;
+}
+
+.oi-tile.is-correct { border-color: var(--oi-ok-text); }
+.oi-tile.is-wrong { border-color: var(--oi-err); }
+
+
+
+.oi-teams {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: var(--oi-gap);
+}
+
+.oi-team {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--oi-surface);
+  border: 2px solid transparent;
+  border-radius: 999px;
+  font-size: 0.95rem;
+}
+
+
+.oi-team.is-active {
+  border-color: var(--oi-ink);
+  font-weight: 600;
+}
+
+.oi-team-score {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+
+
+.oi-timer {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 6px 14px;
+  background: var(--oi-surface);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.oi-timer.is-urgent {
+  background: color-mix(in srgb, var(--oi-err) 15%, var(--oi-surface));
+  color: var(--oi-err);
+}
+
+
+
+.oi-hidden { display: none !important; }
+
+
+.oi-pop { animation: oi-pop-in 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) both; animation-delay: var(--oi-delay, 0s); }
+@keyframes oi-pop-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.9); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .oi-pop { animation: none; }
+}
+
+.oi-media {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto var(--oi-gap);
+}
+
+.oi-media svg { max-width: 100%; height: auto; }
+
+
+
+:focus-visible {
+  outline: 3px solid var(--oi-brand);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+
+
+@media print {
+  .oi-btn, .oi-progress { display: none; }
+  body { padding: 0; }
+  .oi-card { break-inside: avoid; }
+}
+</style><meta charset="utf-8"><title>Прыг по правде</title><script>
+
+(function () {
+  "use strict";
+
+  var KIT_VERSION = 1;
+
+
+  var EMBEDDED = window.parent !== window;
+  if (EMBEDDED && document.documentElement) {
+    document.documentElement.classList.add("oi-embedded");
+  }
+
+  var state = {
+    total: 0,
+    current: 0,
+    score: 0,
+    max: 0,
+    details: [],
+    finished: false,
+    restartHandler: null,
+    teams: null,        
+    activeTeam: 0,
+    timerId: null,
+    timerLeft: 0,
+  };
+
+  function $(sel, root) {
+    return (root || document).querySelector(sel);
+  }
+
+ 
+  function setCover(on) {
+    if (!document.body) return;
+    document.body.classList[on ? "add" : "remove"]("oi-cover");
+  }
+
+
+  var EMBLEMS = {
+   
+    jeopardy: [{d: "M6 10h52v10H6z"}, {d: "M6 24h52v30H6z"}, {d: "M6 39h52"}, {d: "M23 24v30"}, {d: "M41 24v30"}],
+   
+    arcade: [{d: "M12 14h26v36H12z"}, {d: "M43 32h10"}, {d: "M47 26l6 6-6 6"}],
+   
+    pairs: [{d: "M7 16h22v32H7z"}, {d: "M35 16h22v32H35z"}, {d: "M41 28h10"}, {d: "M41 36h10"}],
+  
+    runner: [{d: "M10 8h44v48H10z"}, {d: "M25 8v48M39 8v48", w: 2, o: 0.45},
+             {d: "M13 15h9v9h-9z"}, {d: "M32 39l7 13H25z"}],
+   
+    hero: [{d: "M6 52h13"}, {d: "M22 42h13"}, {d: "M38 32h13"},
+           {d: "M42 22l8-8 8 8v10H42z"}, {d: "M12 44l3-6M28 34l3-6", w: 2, o: 0.5}],
+ 
+    quiz: [{d: "M8 8h48v48H8z"}, {d: "M16 19h9v9h-9z"}, {d: "M32 23.5h16", w: 2.4, o: 0.55},
+           {d: "M16 40l4 4 7-9"}, {d: "M32 40h16", w: 2.4, o: 0.55}],
+  
+    quizrace: [{d: "M6 22h40"}, {d: "M6 42h40"}, {d: "M48 14h12v36H48z"}, {d: "M48 26h12"}, {d: "M48 38h12"}, {d: "M54 14v36"}],
+
+    solve: [{d: "M14 6v52", w: 2, o: 0.45}, {d: "M22 14h34"}, {d: "M22 50h18"},
+            {d: "M32 24v12"}, {d: "M27 31l5 5 5-5"}],
+  
+    flashcards: [{d: "M24 8h30v28H24z", w: 2, o: 0.45}, {d: "M10 22h32v34H10z"},
+                 {d: "M17 34h18"}, {d: "M17 44h11"}],
+    
+    wheel: [{d: "M6 34a26 26 0 1 0 52 0 26 26 0 1 0-52 0"},
+            {d: "M32 8v52M9.5 21L54.5 47M9.5 47L54.5 21", w: 2, o: 0.45},
+            {d: "M36 34a4 4 0 1 0-8 0 4 4 0 1 0 8 0"},
+            {d: "M25 2l7 9 7-9"}],
+  
+    truthjump: [{d: "M6 42h20v7H6z"}, {d: "M38 20h20v7H38z"}, {d: "M32 44V30"}, {d: "M26 36l6-6 6 6"}],
+
+    crossword: [{d: "M10 10h44v44H10z"}, {d: "M10 25h44"}, {d: "M10 39h44"}, {d: "M25 10v44"}, {d: "M39 10v44"},
+                {d: "M12 12l11 11M23 12L12 23", w: 2, o: 0.6}, {d: "M41 41l11 11M52 41L41 52", w: 2, o: 0.6}],
+ 
+    wordsearch: [{d: "M8 8h48v48H8z"},
+                 {d: "M8 20h48M8 32h48M8 44h48M20 8v48M32 8v48M44 8v48", w: 2.2},
+                 {d: "M13 26h38", w: 9, o: 0.32}],
+
+    wordguess: [{d: "M6 22h14v20H6z"}, {d: "M25 22h14v20H25z"}, {d: "M44 22h14v20H44z"}, {d: "M29 34h6"}],
+
+    ordering: [{d: "M10 54h44"}, {d: "M12 40h12v8H12z"}, {d: "M26 30h12v18H26z"}, {d: "M40 18h12v30H40z"}],
+
+    grouping: [{d: "M22 6h20v13H22z"}, {d: "M8 34h20v14H8z"}, {d: "M36 34h20v14H36z"}, {d: "M32 21v8", w: 2.4, o: 0.7}],
+
+    findmistake: [{d: "M8 18h48"}, {d: "M8 30h22"}, {d: "M8 46h30"},
+                  {d: "M52 32a10 10 0 1 1-20 0 10 10 0 0 1 20 0"}],
+ 
+    instrument: [{d: "M8 12h48v40H8z"}, {d: "M17 44a15 15 0 0 1 30 0"},
+                 {d: "M23 40v-4M32 33v-4M41 40v-4", w: 2, o: 0.55},
+                 {d: "M32 44l9-8"}],
+
+    plot: [{d: "M12 8v44h44"}, {d: "M12 26h44M12 40h44M26 8v44M40 8v44", w: 2, o: 0.35},
+           {d: "M16 46l10-12h12l10-20"}],
+
+    simulator: [{d: "M10 18h44M10 32h44M10 46h44", w: 2.6},
+                {d: "M22 12v12M40 26v12M16 40v12"}],
+
+    mix: [{d: "M22 8v26L14 50q-3 8 5 8h26q8 0 5-8l-8-16V8"}, {d: "M18 8h28"},
+          {d: "M17 46h30q2 6-3 6H20q-5 0-3-6", w: 2, o: 0.55},
+          {d: "M32 30a3 3 0 1 0 0-6 3 3 0 0 0 0 6", w: 2, o: 0.55}],
+  };
+
+ 
+  function emblemSvg(parts) {
+    var inner = parts.map(function (p) {
+      return '<path d="' + p.d + '"' +
+        (p.w ? ' stroke-width="' + p.w + '"' : "") +
+        (p.o ? ' opacity="' + p.o + '"' : "") + "/>";
+    }).join("");
+    return '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" ' +
+      'stroke-linecap="round" stroke-linejoin="round">' + inner + "</svg>";
+  }
+
+  function drawEmblem() {
+    var root = $(".oi-root");
+    if (!root) return;
+    var key = root.getAttribute("data-oi-game");
+    if (!key || !EMBLEMS[key] || $(".oi-cover-emblem")) return;
+    var box = document.createElement("div");
+    box.className = "oi-cover-emblem";
+    box.setAttribute("aria-hidden", "true");
+    box.innerHTML = emblemSvg(EMBLEMS[key]);
+    root.insertBefore(box, root.firstChild);
+  }
+
+  function coverOnReady() {
+    if (!$("#intro") && !$("#setup")) return;
+    setCover(true);
+    drawEmblem();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", coverOnReady);
+  } else {
+    coverOnReady();
+  }
+
+  function post(type, payload) {
+    if (window.parent === window) return;
+    try {
+      window.parent.postMessage(
+        Object.assign({ source: "obuchai-interactive", version: KIT_VERSION, type: type }, payload || {}),
+        "*"
+      );
+    } catch (e) {
+
+    }
+  }
+
+
+
+  function ensureProgressEl() {
+    var host = $("[data-oi-progress]");
+    if (!host) return null;
+    if (!$(".oi-progress-track", host)) {
+      host.classList.add("oi-progress");
+      host.innerHTML =
+        '<div class="oi-progress-track"><div class="oi-progress-fill"></div></div>' +
+        '<div class="oi-progress-label"></div>';
+    }
+    return host;
+  }
+
+  function paintProgress() {
+    var host = ensureProgressEl();
+    if (!host || !state.total) return;
+    var pct = Math.min(100, Math.round((state.current / state.total) * 100));
+    $(".oi-progress-fill", host).style.width = pct + "%";
+    $(".oi-progress-label", host).textContent = state.current + " / " + state.total;
+  }
+
+
+
+  function progressHost() {
+    return $("[data-oi-progress]");
+  }
+
+
+  function ensureSlot(cls) {
+    var host = progressHost();
+    if (!host) return null;
+    var el = $("." + cls, host.parentNode || document);
+    if (!el) {
+      el = document.createElement("div");
+      el.className = cls;
+      host.parentNode.insertBefore(el, host);
+    }
+    return el;
+  }
+
+  function paintTeams() {
+    if (!state.teams) return;
+    var el = ensureSlot("oi-teams");
+    if (!el) return;
+    el.innerHTML = "";
+    state.teams.forEach(function (team, i) {
+      var box = document.createElement("div");
+      box.className = "oi-team" + (i === state.activeTeam ? " is-active" : "");
+      box.innerHTML =
+        "<span>" + escapeHtml(team.name) + "</span>" +
+        '<span class="oi-team-score">' + team.score + "</span>";
+      el.appendChild(box);
+    });
+  }
+
+  function paintTimer() {
+    var el = ensureSlot("oi-timer");
+    if (!el) return;
+    if (state.timerId === null) {
+      el.textContent = "";
+      el.className = "oi-timer oi-hidden";
+      return;
+    }
+    var m = Math.floor(state.timerLeft / 60);
+    var s = state.timerLeft % 60;
+    el.className = "oi-timer" + (state.timerLeft <= 10 ? " is-urgent" : "");
+    el.textContent = m + ":" + (s < 10 ? "0" : "") + s;
+  }
+
+
+
+  var Obuchai = {
+    version: KIT_VERSION,
+
+
+    init: function (opts) {
+
+      setCover(false);
+      opts = opts || {};
+      state.total = Number(opts.total) || 0;
+      state.max = Number(opts.max) || state.total;
+      state.current = 0;
+      state.score = 0;
+      state.details = [];
+      state.finished = false;
+      paintProgress();
+      post("ready", { total: state.total });
+      return Obuchai;
+    },
+
+ 
+    step: function (correct, detail) {
+      state.current = Math.min(state.total || state.current + 1, state.current + 1);
+      if (correct) state.score += 1;
+      state.details.push({
+        index: state.current,
+        correct: !!correct,
+        text: detail && detail.text ? String(detail.text) : "",
+        explanation: detail && detail.explanation ? String(detail.explanation) : "",
+
+        skill: detail && detail.skill ? String(detail.skill) : "",
+      });
+      paintProgress();
+
+      post("progress", {
+        current: state.current,
+        total: state.total,
+        score: state.score,
+        correct: !!correct,
+      });
+      return Obuchai;
+    },
+
+
+    teams: function (names) {
+      var list = (names || []).filter(function (n) { return String(n || "").trim(); });
+      if (!list.length) list = ["Команда 1", "Команда 2"];
+      state.teams = list.map(function (n) { return {name: String(n).trim(), score: 0}; });
+      state.activeTeam = 0;
+      paintTeams();
+      return Obuchai;
+    },
+
+
+    award: function (index, points) {
+      if (!state.teams || !state.teams[index]) return Obuchai;
+      state.teams[index].score += Number(points) || 0;
+      paintTeams();
+      return Obuchai;
+    },
+
+
+    nextTeam: function (index) {
+      if (!state.teams) return Obuchai;
+      state.activeTeam = index != null
+        ? Number(index) % state.teams.length
+        : (state.activeTeam + 1) % state.teams.length;
+      paintTeams();
+      return Obuchai;
+    },
+
+
+    activeTeam: function () {
+      return state.teams ? state.activeTeam : 0;
+    },
+
+
+    timer: function (opts) {
+      opts = opts || {};
+      Obuchai.stopTimer();
+      state.timerLeft = Math.max(0, Number(opts.seconds) || 60);
+      state.timerId = setInterval(function () {
+        state.timerLeft -= 1;
+        paintTimer();
+        if (state.timerLeft <= 0) {
+          Obuchai.stopTimer();
+          if (typeof opts.onEnd === "function") opts.onEnd();
+        }
+      }, 1000);
+      paintTimer();
+      return Obuchai;
+    },
+
+    stopTimer: function () {
+      if (state.timerId !== null) {
+        clearInterval(state.timerId);
+        state.timerId = null;
+      }
+      paintTimer();
+      return Obuchai;
+    },
+
+ 
+    feedback: function (host, correct, verdict, explanation) {
+      var el = typeof host === "string" ? $(host) : host;
+      if (!el) return Obuchai;
+      el.className = "oi-feedback " + (correct ? "oi-feedback--ok" : "oi-feedback--err");
+      el.innerHTML = "";
+      var v = document.createElement("strong");
+      v.className = "oi-feedback-verdict";
+      v.textContent = verdict || (correct ? "Верно" : "Неверно");
+      el.appendChild(v);
+      if (explanation) {
+        var p = document.createElement("span");
+        p.textContent = explanation;
+        el.appendChild(p);
+      }
+      return Obuchai;
+    },
+
+
+    finish: function (opts) {
+      if (state.finished) return Obuchai;
+      state.finished = true;
+      opts = opts || {};
+      Obuchai.stopTimer();
+
+      var score = opts.score != null ? Number(opts.score) : state.score;
+      var max = opts.max != null ? Number(opts.max) : state.max || state.total;
+      var host = $("[data-oi-result]") || document.body;
+
+
+      if (state.teams) {
+        var ranked = state.teams
+          .map(function (t, i) { return {name: t.name, score: t.score, i: i}; })
+          .sort(function (a, b) { return b.score - a.score; });
+        var top = ranked[0];
+        var draw = ranked.length > 1 && ranked[1].score === top.score;
+
+        host.className = "oi-card oi-result";
+        host.innerHTML =
+          podiumHtml(ranked) +
+
+          '<div class="oi-result-score oi-hidden" data-score="' + top.score + '" data-max="' + max + '">' +
+          top.score + "</div>" +
+          '<div class="oi-result-verdict">' +
+          (draw ? "Ничья — победила дружба" : "Победила «" + escapeHtml(top.name) + "»") +
+          "</div>" +
+          '<button class="oi-btn" data-oi-restart style="margin-top:8px">Сыграть заново</button>' +
+          '<div class="oi-result-review">' +
+          '<p class="oi-result-review-title">Итоги</p>' +
+          ranked.map(function (t, place) {
+            return '<div class="oi-review-item">' +
+              '<span class="oi-review-mark">' + (place + 1) + "</span>" +
+              "<span><strong>" + escapeHtml(t.name) + "</strong> — " + t.score + "</span></div>";
+          }).join("") +
+          "</div>" +
+          brandMark();
+
+        bindRestart(host);
+        animatePodium(host);
+        Obuchai.celebrate();
+        Obuchai.report({teams: ranked, score: top.score, max: max});
+        host.scrollIntoView({behavior: "smooth", block: "start"});
+        return Obuchai;
+      }
+
+      var pct = max ? score / max : 0;
+      var tier = pct >= 0.9 ? "gold" : pct >= 0.7 ? "silver" : pct >= 0.4 ? "bronze" : "none";
+      var verdict =
+        pct >= 0.9 ? "Отличный результат!" :
+        pct >= 0.7 ? "Хорошо, но есть что повторить." :
+        pct >= 0.4 ? "Стоит вернуться к теме." :
+                     "Тему нужно разобрать заново.";
+
+      var reviewItems = state.details.filter(function (d) { return d.text || d.explanation; });
+      var review = reviewItems
+        .map(function (d) {
+          return (
+            '<div class="oi-review-item ' + (d.correct ? "is-correct" : "is-wrong") + '">' +
+            '<span class="oi-review-mark">' + (d.correct ? "✓" : "✗") + "</span>" +
+            "<span><strong>" + escapeHtml(d.text) + "</strong>" +
+            (d.explanation ? "<br>" + escapeHtml(d.explanation) : "") +
+            "</span></div>"
+          );
+        })
+        .join("");
+
+      host.className = "oi-card oi-result";
+      host.innerHTML =
+        '<div class="oi-result-badge">' + medalSvg(tier) + "</div>" +
+
+        '<div class="oi-result-score" data-score="' + score + '" data-max="' + max + '">' +
+        '<span class="oi-count">' + score + "</span> / " + max + "</div>" +
+        '<div class="oi-result-verdict">' + verdict + "</div>" +
+        '<button class="oi-btn" data-oi-restart>Пройти заново</button>' +
+        (review
+          ? '<div class="oi-result-review"><p class="oi-result-review-title">Разбор</p>' + review + "</div>"
+          : "") +
+        brandMark();
+
+      bindRestart(host);
+      countUp($(".oi-count", host), score);
+
+      if (pct >= 0.7) Obuchai.celebrate();
+      Obuchai.report({ score: score, max: max, details: state.details });
+      host.scrollIntoView({ behavior: "smooth", block: "start" });
+      return Obuchai;
+    },
+
+
+    celebrate: function (opts) {
+      confetti(opts || {});
+      return Obuchai;
+    },
+
+
+    restart: function (fn) {
+      state.restartHandler = typeof fn === "function" ? fn : null;
+      return Obuchai;
+    },
+
+ 
+    report: function (payload) {
+      post("result", payload || {});
+      return Obuchai;
+    },
+  };
+
+  function bindRestart(host) {
+    var btn = $("[data-oi-restart]", host);
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      if (!state.restartHandler) {
+        window.location.reload();
+        return;
+      }
+      state.finished = false;
+      state.current = 0;
+      state.score = 0;
+      state.details = [];
+      if (state.teams) {
+
+        state.teams.forEach(function (t) { t.score = 0; });
+        state.activeTeam = 0;
+        paintTeams();
+      }
+      state.restartHandler();
+      paintProgress();
+    });
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
+
+
+  function prefersReduced() {
+    return window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function cssVar(name, fallback) {
+    var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    return v || fallback;
+  }
+
+
+  function countUp(el, to) {
+    if (!el) return;
+    to = Number(to) || 0;
+    if (prefersReduced()) { el.textContent = to; return; }
+    var dur = 900, start = null;
+    requestAnimationFrame(function step(t) {
+      if (start == null) start = t;
+      var k = Math.min(1, (t - start) / dur);
+      var e = 1 - Math.pow(1 - k, 3);
+      el.textContent = Math.round(to * e);
+      if (k < 1) requestAnimationFrame(step);
+      else el.textContent = to;
+    });
+  }
+
+
+  function medalSvg(tier) {
+    var coin = {
+      gold:   ["#ffe38f", "#e0a92e"],
+      silver: ["#f3f6fa", "#9aa6b6"],
+      bronze: ["#f2c48f", "#b97a43"],
+      none:   ["#d9dee6", "#9aa3af"],
+    }[tier] || ["#d9dee6", "#9aa3af"];
+    var star =
+      "M50 66 L53.5 75.1 L63.3 75.7 L55.7 81.9 L58.2 91.3 " +
+      "L50 86 L41.8 91.3 L44.3 81.9 L36.7 75.7 L46.5 75.1 Z";
+    return (
+      '<svg viewBox="0 0 100 120" aria-hidden="true">' +
+      '<defs><linearGradient id="oiCoin" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="' + coin[0] + '"/>' +
+      '<stop offset="1" stop-color="' + coin[1] + '"/></linearGradient></defs>' +
+      '<path d="M34 8 L34 70 L50 56 L50 8 Z" fill="var(--oi-brand)" opacity="0.9"/>' +
+      '<path d="M66 8 L66 70 L50 56 L50 8 Z" fill="var(--oi-brand)" opacity="0.6"/>' +
+      '<circle cx="50" cy="80" r="32" fill="url(#oiCoin)"/>' +
+      '<circle cx="50" cy="80" r="32" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>' +
+      '<circle cx="50" cy="80" r="24.5" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"/>' +
+      '<path d="' + star + '" fill="rgba(255,255,255,0.92)"/>' +
+      "</svg>"
+    );
+  }
+
+
+  function podiumHtml(ranked) {
+    var top = ranked[0].score;
+
+    var order = ranked.length >= 3
+      ? [ranked[1], ranked[0], ranked[2]]
+      : ranked.slice();
+    var base = top > 0 ? top : 1;
+    var cols = order.map(function (t) {
+      var place = 1 + ranked.filter(function (r) { return r.score > t.score; }).length;
+      var first = t === ranked[0];
+      var sc = Math.max(0, t.score);
+      var h = Math.round(46 + (sc / base) * (150 - 46));
+      if (!first && t.score < top) h = Math.min(h, 132);   
+      var crown = place === 1 ? "👑" : "";
+      return (
+        '<div class="oi-podium-col' + (first ? " is-first" : "") + '">' +
+        '<div class="oi-podium-crown">' + crown + "</div>" +
+        '<div class="oi-podium-name">' + escapeHtml(t.name) + "</div>" +
+        '<div class="oi-podium-bar" data-h="' + h + '">' +
+        '<span class="oi-podium-bar-score" data-to="' + t.score + '">' + t.score + "</span></div>" +
+        '<div class="oi-podium-place">' + place + " место</div>" +
+        "</div>"
+      );
+    }).join("");
+    return '<div class="oi-podium">' + cols + "</div>";
+  }
+
+  function animatePodium(host) {
+    var bars = host.querySelectorAll(".oi-podium-bar");
+    function apply() {
+   
+      for (var i = 0; i < bars.length; i++) {
+        bars[i].style.height = bars[i].getAttribute("data-h") + "px";
+      }
+    }
+    if (prefersReduced()) apply();
+    else requestAnimationFrame(apply);
+
+    var scores = host.querySelectorAll(".oi-podium-bar-score");
+    for (var i = 0; i < scores.length; i++) countUp(scores[i], scores[i].getAttribute("data-to"));
+  }
+
+  function brandMark() {
+    return '<div class="oi-result-brand"><b>Обучай</b> · obuchai.com</div>';
+  }
+
+
+  function confetti(opts) {
+    if (prefersReduced()) return;
+    var canvas = document.createElement("canvas");
+    canvas.className = "oi-confetti";
+    var ctx = canvas.getContext && canvas.getContext("2d");
+    if (!ctx) return;
+    document.body.appendChild(canvas);
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    function size() { canvas.width = innerWidth * dpr; canvas.height = innerHeight * dpr; }
+    size();
+    var colors = opts.colors || [
+      cssVar("--oi-brand", "#b8269c"), cssVar("--oi-ok", "#72ea4e"),
+      "#ffd23f", "#ffffff", cssVar("--oi-err", "#ea604e"),
+    ];
+    var N = opts.count || 140, parts = [];
+    for (var i = 0; i < N; i++) {
+      parts.push({
+        x: (0.5 + (Math.random() - 0.5) * 0.6) * canvas.width,
+        y: -Math.random() * canvas.height * 0.35,
+        vx: (Math.random() - 0.5) * 6 * dpr,
+        vy: (Math.random() * 3 + 2) * dpr,
+        g: (0.11 + Math.random() * 0.08) * dpr,
+        s: (6 + Math.random() * 7) * dpr,
+        rot: Math.random() * 6.28,
+        vr: (Math.random() - 0.5) * 0.32,
+        color: colors[i % colors.length],
+        shape: Math.random() < 0.55 ? 0 : 1,
+      });
+    }
+    var start = null, life = 2600;
+    function frame(t) {
+      if (start == null) start = t;
+      var el = t - start;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (var j = 0; j < parts.length; j++) {
+        var p = parts[j];
+        p.vy += p.g; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.vx *= 0.99;
+        ctx.save();
+        ctx.globalAlpha = el > life - 700 ? Math.max(0, (life - el) / 700) : 1;
+        ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.fillStyle = p.color;
+        if (p.shape === 0) ctx.fillRect(-p.s / 2, -p.s / 3, p.s, p.s * 0.66);
+        else { ctx.beginPath(); ctx.arc(0, 0, p.s / 2, 0, 6.28); ctx.fill(); }
+        ctx.restore();
+      }
+      if (el < life) requestAnimationFrame(frame);
+      else if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
+    }
+    requestAnimationFrame(frame);
+  }
+
+
+
+  var lastHeight = 0;
+  function reportHeight() {
+    var h = Math.max(
+      document.body.scrollHeight,
+      document.documentElement ? document.documentElement.scrollHeight : 0
+    );
+    if (Math.abs(h - lastHeight) > 8) {
+      lastHeight = h;
+      post("resize", { height: h });
+    }
+  }
+
+  if (window.ResizeObserver) {
+    new ResizeObserver(reportHeight).observe(document.documentElement);
+  } else {
+    setInterval(reportHeight, 500);
+  }
+  window.addEventListener("load", reportHeight);
+
+  window.Obuchai = Obuchai;
+})();
+</script><style>html{scrollbar-gutter:stable}html.oi-embedded{scrollbar-gutter:auto}</style></head>
+<body>
+<div class="oi-root tj" data-oi-game="truthjump">
+  <h1 class="oi-title" id="title"></h1>
+  <p class="oi-subtitle" id="subtitle"></p>
+
+
+  <div class="oi-card" id="intro">
+    <p class="oi-question">Как играть</p>
+    <p class="tj-how">Ты лезешь на вершину. Над тобой две каменные плиты — на
+      каждой утверждение. Прыгай на ту, где написан ПРАВИЛЬНЫЙ ОТВЕТ: она удержит и ты
+      станешь выше. Прыгнешь на НЕПРАВИЛЬНЫЙ ОТВЕТ — плита раскрошится, и ты сорвёшься
+      вниз. Выбирай тапом по плите, стрелками ←/→ или клавишами 1 и 2. Три
+      срыва — и восхождение окончено.</p>
+    <div class="tj-row tj-row--end">
+      <button class="oi-btn" id="start" type="button">Начать восхождение</button>
+    </div>
+  </div>
+
+  <!-- Экран 2: игра -->
+  <div class="tj-game oi-hidden" id="game" data-phase="idle">
+    <div class="tj-hud">
+      <div class="tj-stat"><span class="tj-stat-label">Жизни</span><span class="tj-lives" id="lives"></span></div>
+      <div class="tj-stat"><span class="tj-stat-label">Очки</span><span class="tj-score" id="score">0</span></div>
+      <div class="tj-stat tj-stat--combo"><span class="tj-stat-label">Комбо</span><span class="tj-combo" id="combo">×1</span></div>
+    </div>
+
+  
+    <p class="tj-ask">Прыгай на плиту, где написана <b>правда</b></p>
+    <div data-oi-progress></div>
+
+
+    <div class="tj-stage" id="stage">
+      <div class="tj-sun" aria-hidden="true"></div>
+      <div class="tj-bg" id="bg" aria-hidden="true">
+        <div class="tj-bg-layer tj-bg--far"></div>
+      </div>
+      <svg class="tj-ridge" id="ridge" viewBox="0 0 300 60" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 60 V44 l22 -18 l16 12 l20 -22 l18 16 l14 -10 l24 22 l18 -14 l22 18 l20 -12 l26 20 l26 -16 l18 14 V60 Z"/>
+      </svg>
+      <div class="tj-abyss" aria-hidden="true"></div>
+
+      <div class="tj-world" id="world">
+        <div class="tj-hero" id="hero" aria-hidden="true">
+          <div class="tj-hero-inner">
+            <svg class="tj-hero-svg" viewBox="0 0 52 54" width="60" height="62">
+              <ellipse class="tj-hero-shadow" cx="26" cy="51" rx="16" ry="3.5"/>
+              <rect class="tj-leg tj-leg--l" x="16" y="36" width="8" height="13" rx="4"/>
+              <rect class="tj-leg tj-leg--r" x="28" y="36" width="8" height="13" rx="4"/>
+              <rect class="tj-arm tj-arm--l" x="3" y="20" width="8" height="16" rx="4"/>
+              <rect class="tj-arm tj-arm--r" x="41" y="20" width="8" height="16" rx="4"/>
+              <rect class="tj-hero-body" x="8" y="6" width="36" height="34" rx="15"/>
+              <circle class="tj-hero-eye" cx="19" cy="20" r="6"/>
+              <circle class="tj-hero-eye" cx="33" cy="20" r="6"/>
+              <circle class="tj-hero-pupil" cx="20.6" cy="19.6" r="2.7"/>
+              <circle class="tj-hero-pupil" cx="34.6" cy="19.6" r="2.7"/>
+            </svg>
+          </div>
+          <span class="tj-dust"></span>
+        </div>
+      </div>
+
+   
+      <div class="tj-alt" aria-hidden="true">
+        <span class="tj-alt-top"></span>
+        <span class="tj-alt-fill" id="altFill"></span>
+      </div>
+
+
+      <div class="tj-toast oi-hidden" id="toast" aria-live="polite">
+        <span class="tj-toast-title" id="toastTitle"></span>
+        <span class="tj-toast-text" id="toastText"></span>
+      </div>
+    </div>
+  </div>
+
+  <div data-oi-result class="oi-hidden"></div>
+</div>
+
+<style>
+ 
+  :root {
+    --tj-stone: #e2b984;
+    --tj-stone-deep: #b07c45;
+    --tj-stone-dark: #7d5330;
+    --tj-stone-top: #f7e5c6;
+    --tj-ink-carve: #5b3d21;
+    --tj-abyss: #1d2b3c;
+    --tj-green: #2f9e44;
+    --tj-green-deep: #1c7a30;
+  }
+
+  [data-oi-progress].oi-progress { margin: 6px 0 12px; }
+
+  .tj-how { color: var(--oi-ink-sub); margin: 0 0 12px; line-height: 1.5; }
+  .tj-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .tj-row--end { justify-content: flex-end; margin-top: 20px; }
+
+  /* ─── HUD ─────────────────────────────────────────────────────── */
+  .tj-hud { display: flex; align-items: flex-end; gap: 22px; margin-bottom: 10px; }
+  .tj-stat { display: flex; flex-direction: column; gap: 3px; line-height: 1; }
+  .tj-stat--combo { margin-left: auto; text-align: right; align-items: flex-end; }
+  .tj-stat-label { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--oi-ink-sub); }
+  .tj-score, .tj-combo { font-family: 'Golos Text', Inter, sans-serif; font-size: 1.7rem; line-height: 1; }
+  .tj-score { color: var(--oi-ink); }
+  .tj-combo { color: var(--oi-ink-sub); transition: color 0.15s ease, transform 0.15s ease; transform-origin: right center; }
+  .tj-combo.is-hot { color: var(--tj-green-deep); }
+  @media (prefers-reduced-motion: no-preference) {
+    .tj-combo.is-hot { animation: tj-beat 0.7s ease-in-out infinite; }
+  }
+  @keyframes tj-beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.16); } }
+
+  .tj-lives { display: flex; gap: 6px; align-items: center; }
+  .tj-pip { width: 13px; height: 13px; border-radius: 3px; transform: rotate(45deg);
+    background: var(--tj-green); box-shadow: 0 2px 0 var(--tj-green-deep); transition: all 0.2s ease; }
+  .tj-pip.is-lost { background: transparent; box-shadow: inset 0 0 0 2px rgba(0,0,0,0.14); }
+
+  .tj-ask { margin: 0 0 4px; font-size: 0.92rem; font-weight: 600; color: var(--oi-ink-sub); }
+  .tj-ask b { color: var(--tj-green-deep); font-weight: 800; }
+
+  /* ─── Сцена ───────────────────────────────────────────────────── */
+  .tj-stage {
+    position: relative; overflow: hidden;
+    height: clamp(420px, 64vh, 560px);
+    border-radius: var(--oi-radius);
+    background: linear-gradient(180deg, #4ea3d8 0%, #7cc0e8 22%, #b4dcf2 52%, #dff0f8 80%, #f6e3c4 100%);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,0.55), inset 0 -40px 70px rgba(20,40,60,0.14);
+    user-select: none; touch-action: manipulation;
+  }
+  .tj-stage.is-shake { animation: tj-shake 0.4s ease; }
+  @keyframes tj-shake {
+    0%, 100% { transform: translateY(0); }
+    20% { transform: translateY(-5px); } 45% { transform: translateY(4px); }
+    70% { transform: translateY(-2px); }
+  }
+  @media (prefers-reduced-motion: reduce) { .tj-stage.is-shake { animation: none; } }
+
+
+  .tj-sun {
+    position: absolute; left: 74%; top: 12%; width: 120px; height: 120px; border-radius: 50%;
+    background: radial-gradient(circle, #fff6dd 0%, #ffe0a6 52%, rgba(255,224,166,0) 72%);
+    pointer-events: none;
+  }
+
+
+  .tj-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .tj-bg-layer {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 460%;
+    transition: transform 0.52s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  .tj-bg--far {
+    background:
+      radial-gradient(46px 16px at 18% 8%, rgba(255,255,255,0.85) 0 60%, rgba(255,255,255,0) 100%),
+      radial-gradient(64px 20px at 74% 14%, rgba(255,255,255,0.7) 0 60%, rgba(255,255,255,0) 100%),
+      radial-gradient(52px 18px at 38% 22%, rgba(255,255,255,0.75) 0 60%, rgba(255,255,255,0) 100%),
+      radial-gradient(72px 22px at 82% 31%, rgba(255,255,255,0.8) 0 60%, rgba(255,255,255,0) 100%),
+      radial-gradient(58px 18px at 12% 39%, rgba(255,255,255,0.7) 0 60%, rgba(255,255,255,0) 100%),
+      radial-gradient(80px 24px at 56% 47%, rgba(255,255,255,0.85) 0 60%, rgba(255,255,255,0) 100%),
+      radial-gradient(50px 16px at 26% 56%, rgba(255,255,255,0.7) 0 60%, rgba(255,255,255,0) 100%),
+      radial-gradient(68px 22px at 78% 64%, rgba(255,255,255,0.8) 0 60%, rgba(255,255,255,0) 100%),
+      radial-gradient(56px 18px at 44% 73%, rgba(255,255,255,0.75) 0 60%, rgba(255,255,255,0) 100%),
+      radial-gradient(74px 22px at 16% 82%, rgba(255,255,255,0.8) 0 60%, rgba(255,255,255,0) 100%),
+      radial-gradient(60px 20px at 68% 91%, rgba(255,255,255,0.7) 0 60%, rgba(255,255,255,0) 100%);
+  }
+
+  .tj-ridge {
+    position: absolute; left: -4%; right: -4%; bottom: 0; height: 22%;
+    transition: bottom 0.52s cubic-bezier(0.22,1,0.36,1);
+  }
+  .tj-ridge path { fill: #8ba6bf; opacity: 0.5; }
+
+
+  .tj-abyss {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 22%;
+    background: linear-gradient(180deg, rgba(120,150,175,0) 0%, rgba(90,120,148,0.35) 55%, rgba(52,78,104,0.7) 100%);
+    pointer-events: none; z-index: 3;
+  }
+
+ 
+  .tj-world {
+    position: absolute; inset: 0; z-index: 2;
+    transition: transform 0.52s cubic-bezier(0.22,1,0.36,1);
+  }
+
+
+  .tj-stone {
+    position: absolute; width: 44%; height: 0;
+    appearance: none; border: none; background: none; padding: 0; font: inherit;
+    transform: translateX(-50%); cursor: pointer;
+    transition: transform 0.45s ease, opacity 0.35s ease;
+  }
+  .tj-stone:not([data-side]) { cursor: default; pointer-events: none; }
+
+  .tj-slab {
+    position: absolute; top: 0; left: 0; right: 0;
+    min-height: 54px; padding: 12px 14px 14px;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    border-radius: 4px 4px 10px 10px;
+    color: #3f2a13;
+    font-weight: 800; font-size: clamp(0.8rem, 2vw, 1rem); line-height: 1.25;
+    overflow-wrap: break-word; hyphens: auto;
+    background:
+      linear-gradient(180deg, var(--tj-stone-top) 0 8px, rgba(109,73,42,0.5) 8px 11px, transparent 11px),
+      linear-gradient(90deg, rgba(255,255,255,0.2) 0 6%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 80%, rgba(0,0,0,0.14) 100%),
+      repeating-linear-gradient(180deg, rgba(109,73,42,0.09) 0 1px, transparent 1px 19px),
+      linear-gradient(180deg, #d7ab74 0%, #b07c45 62%, #8e6136 100%);
+    box-shadow: 0 12px 20px rgba(30,50,60,0.3), inset 0 -7px 14px rgba(94,62,32,0.4);
+    /* Высеченный текст: светлая кромка снизу от букв. */
+    text-shadow: 0 1px 0 rgba(255,255,255,0.45);
+    transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.25s ease, color 0.25s ease;
+  }
+
+  .tj-slab::before {
+    content: ""; position: absolute; top: -12px; left: 10px;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--tj-stone-dark); color: #fff;
+    font-family: 'Golos Text', Inter, sans-serif; font-size: 0.95rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.25);
+  }
+  .tj-stone:not([data-side]) .tj-slab::before { display: none; }
+  .tj-stone[data-side="0"] .tj-slab::before { content: "1"; }
+  .tj-stone[data-side="1"] .tj-slab::before { content: "2"; }
+
+  .tj-stone[data-side]:hover .tj-slab { transform: translateY(-3px); box-shadow: 0 14px 24px rgba(30,50,60,0.32), inset 0 -6px 12px rgba(109,73,42,0.35); }
+  .tj-stone[data-side]:active .tj-slab { transform: translateY(0); }
+
+  .tj-stone.is-safe .tj-slab {
+    color: #14532a;
+    background:
+      linear-gradient(180deg, #b6efc6 0 7px, rgba(28,122,48,0.5) 7px 10px, transparent 10px),
+      linear-gradient(180deg, #7fdc9c 0%, #3faa5c 100%);
+    box-shadow: 0 12px 20px rgba(31,122,50,0.3), inset 0 -6px 12px rgba(24,96,44,0.35);
+  }
+  .tj-stone.is-crumble .tj-slab {
+    color: #7a1c1c;
+    background:
+      linear-gradient(180deg, #ffc9c9 0 7px, rgba(190,40,40,0.5) 7px 10px, transparent 10px),
+      linear-gradient(180deg, #ff9b9b 0%, #d94040 100%);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .tj-stone.is-crumble { animation: tj-crumble 0.75s ease-in forwards; }
+  }
+  @media (prefers-reduced-motion: reduce) { .tj-stone.is-crumble { opacity: 0.25; } }
+  @keyframes tj-crumble {
+    0% { transform: translateX(-50%) translateY(0) rotate(0); opacity: 1; }
+    16% { transform: translateX(-50%) translateY(5px) rotate(-2deg); }
+    100% { transform: translateX(-50%) translateY(230px) rotate(12deg); opacity: 0; }
+  }
+  .tj-stone.is-gone { opacity: 0; }
+
+  .tj-start .tj-slab {
+    background:
+      linear-gradient(180deg, #63bd77 0 11px, #4c9d5f 11px 15px, transparent 15px),
+      repeating-linear-gradient(180deg, rgba(109,73,42,0.09) 0 1px, transparent 1px 19px),
+      linear-gradient(180deg, #d7ab74 0%, #b07c45 62%, #8e6136 100%);
+  }
+
+
+  .tj-stone.is-base .tj-slab { color: transparent; text-shadow: none; }
+
+
+  .tj-summit {
+    position: absolute; width: 62%; height: 0; transform: translateX(-50%);
+    transition: opacity 0.35s ease;
+  }
+  .tj-summit-top {
+    position: absolute; top: 0; left: 0; right: 0; height: 66px;
+    border-radius: 6px 6px 12px 12px;
+    background:
+      linear-gradient(180deg, #63bd77 0 9px, #4c9d5f 9px 13px, transparent 13px),
+      linear-gradient(180deg, var(--tj-stone) 0%, var(--tj-stone-deep) 100%);
+    box-shadow: 0 12px 22px rgba(30,50,60,0.3);
+  }
+  .tj-summit-flag { position: absolute; bottom: 0; left: 22%; width: 4px; height: 60px; background: #7d5330; border-radius: 2px; }
+  .tj-summit-flag::after {
+    content: ""; position: absolute; left: 4px; top: 2px; width: 34px; height: 24px;
+    background: repeating-conic-gradient(#1b2a33 0% 25%, #ffffff 0% 50%) 0 0/12px 12px;
+    box-shadow: 0 2px 6px rgba(30,50,60,0.3);
+  }
+  .tj-summit-label {
+    position: absolute; bottom: 66px; left: 50%; transform: translateX(-50%);
+    font-size: 0.68rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--tj-green-deep); white-space: nowrap;
+  }
+
+
+  .tj-alt {
+    position: absolute; right: 12px; top: 16px; bottom: 16px; width: 8px; z-index: 4;
+    border-radius: 999px; background: rgba(27,42,51,0.22);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.4);
+  }
+  .tj-alt-fill {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 0; border-radius: 999px;
+    background: linear-gradient(180deg, var(--tj-green), var(--tj-green-deep));
+    transition: height 0.5s cubic-bezier(0.22,1,0.36,1);
+  }
+  .tj-alt-top {
+    position: absolute; left: 50%; top: -9px; transform: translateX(-50%);
+    width: 14px; height: 14px; border-radius: 3px;
+    background: repeating-conic-gradient(#1b2a33 0% 25%, #ffffff 0% 50%) 0 0/7px 7px;
+    box-shadow: 0 1px 3px rgba(30,50,60,0.35);
+  }
+
+ 
+  .tj-hero {
+    position: absolute; transform: translateX(-50%); z-index: 3; pointer-events: none;
+    transition: left 0.44s cubic-bezier(0.3,0,0.5,1), bottom 0.44s cubic-bezier(0.15,0.85,0.4,1), opacity 0.3s ease;
+  }
+  .tj-hero-inner { position: relative; }
+  .tj-hero-svg { display: block; }
+  .tj-hero-svg .tj-hero-body { fill: var(--tj-green); }
+  .tj-hero-svg .tj-leg, .tj-hero-svg .tj-arm { fill: var(--tj-green-deep); }
+  .tj-hero-svg .tj-hero-eye { fill: #fff; }
+  .tj-hero-svg .tj-hero-pupil { fill: #1b2a33; }
+  .tj-hero-svg .tj-hero-shadow { fill: rgba(27,42,51,0.22); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .tj-stage.is-running .tj-hero:not(.is-jump):not(.is-fall):not(.is-crouch) .tj-hero-inner { animation: tj-idle 1.6s ease-in-out infinite; }
+    .tj-hero.is-crouch .tj-hero-inner { animation: tj-crouch 0.14s ease forwards; }
+    .tj-hero.is-jump .tj-hero-inner { animation: tj-stretch 0.44s ease; }
+    .tj-hero.is-jump .tj-arm--l, .tj-hero.is-jump .tj-arm--r { animation: tj-reach 0.44s ease; }
+    .tj-hero.is-land .tj-hero-inner { animation: tj-squash 0.24s ease; }
+  }
+  @keyframes tj-idle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+  @keyframes tj-crouch { to { transform: translateY(5px) scaleY(0.88); } }
+  @keyframes tj-stretch {
+    0% { transform: translateY(4px) scaleY(0.9); }
+    35% { transform: translateY(0) scaleY(1.12); }
+    100% { transform: translateY(0) scaleY(1); }
+  }
+  @keyframes tj-squash { 0% { transform: translateY(4px) scaleY(0.82); } 100% { transform: translateY(0) scaleY(1); } }
+  @keyframes tj-reach { 0%, 100% { transform: translateY(0); } 45% { transform: translateY(-9px); } }
+
+
+  .tj-hero.is-fall { transition: bottom 0.62s cubic-bezier(0.5,0,0.9,0.55), left 0.62s ease-out; }
+  @media (prefers-reduced-motion: no-preference) {
+    .tj-hero.is-fall .tj-hero-inner { animation: tj-tumble 0.62s linear; }
+  }
+  @keyframes tj-tumble { to { transform: rotate(-320deg); } }
+
+
+  .tj-dust {
+    position: absolute; left: 50%; bottom: -6px; width: 56px; height: 12px; margin-left: -28px;
+    border-radius: 50%; background: rgba(176,124,69,0.55); opacity: 0; pointer-events: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .tj-hero.is-land .tj-dust { animation: tj-puff 0.45s ease-out; }
+  }
+  @keyframes tj-puff {
+    0% { opacity: 0.85; transform: scale(0.5); }
+    100% { opacity: 0; transform: scale(2.1); }
+  }
+
+
+  .tj-toast {
+    position: absolute; left: 50%; top: 12px; transform: translateX(-50%);
+    max-width: 74%; padding: 10px 14px; border-radius: 12px;
+    background: rgba(27,42,51,0.92); color: #fff;
+    display: flex; flex-direction: column; gap: 2px; text-align: center; z-index: 5;
+    box-shadow: 0 12px 26px rgba(20,35,50,0.3);
+  }
+  .tj-toast-title { font-weight: 800; font-size: 0.86rem; color: #8ce8a3; }
+  .tj-toast-text { font-size: 0.8rem; line-height: 1.35; color: rgba(255,255,255,0.85); }
+  @media (prefers-reduced-motion: no-preference) {
+    .tj-toast { animation: tj-toast-in 0.28s ease; }
+  }
+  @keyframes tj-toast-in { from { opacity: 0; transform: translate(-50%, -10px); } }
+
+
+  .tj-verdict { font-family: 'Golos Text', Inter, sans-serif; font-size: clamp(1.3rem, 4vw, 1.9rem); text-align: center; margin-bottom: 2px; }
+  .tj-verdict.is-win { color: var(--tj-green-deep); }
+  .tj-verdict.is-lose { color: var(--oi-err); }
+  .tj-result-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 14px 0 4px; }
+  .tj-chip-stat { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 16px; border-radius: 12px; background: rgba(27,42,51,0.05); border: 1px solid rgba(27,42,51,0.1); }
+  .tj-chip-value { font-family: 'Golos Text', Inter, sans-serif; font-size: 1.9rem; line-height: 1; color: var(--oi-ink); }
+  .tj-chip-label { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--oi-ink-sub); }
+  .tj-chip-stat.is-score { background: rgba(47,158,68,0.12); border-color: rgba(47,158,68,0.4); }
+  .tj-chip-stat.is-score .tj-chip-value { color: var(--tj-green-deep); }
+
+  @media (max-width: 520px) {
+
+    .tj-stone { width: 42%; }
+    .tj-slab { font-size: 0.74rem; padding: 10px 8px 12px; }
+    .tj-hud { gap: 14px; }
+  }
+</style>
+
+<script>
+const GAME = {
+  "title": "Виды глагола",
+  "subtitle": "Русский язык · 7 класс",
+  "steps": [
+    {
+      "true_fact": "Глагол «построил» — совершенного вида",
+      "false_fact": "Глагол «построил» — несовершенного вида",
+      "explanation": "Отвечает на вопрос «что сделать?» — это совершенный вид."
+    },
+    {
+      "true_fact": "Глагол «рисовала» — несовершенного вида",
+      "false_fact": "Глагол «рисовала» — совершенного вида",
+      "explanation": "Отвечает на вопрос «что делать?» — это несовершенный вид."
+    },
+    {
+      "true_fact": "Глагол «прыгнули» — совершенного вида",
+      "false_fact": "Глагол «прыгнули» — несовершенного вида",
+      "explanation": "Обозначает завершённое действие: что сделал? — прыгнул."
+    },
+    {
+      "true_fact": "Глагол «учу» — несовершенного вида",
+      "false_fact": "Глагол «учу» — совершенного вида",
+      "explanation": "Действие в процессе: что делать? — учить (несов. в.)."
+    },
+    {
+      "true_fact": "Глагол «споют» — совершенного вида",
+      "false_fact": "Глагол «споют» — несовершенного вида",
+      "explanation": "Приставка с- указывает на совершенный вид: что сделать?"
+    },
+    {
+      "true_fact": "Глагол «летает» — несовершенного вида",
+      "false_fact": "Глагол «летает» — совершенного вида",
+      "explanation": "Обозначает повторяющееся действие: что делать? — летать."
+    },
+    {
+      "true_fact": "Глагол «разобьёшь» — совершенного вида",
+      "false_fact": "Глагол «разобьёшь» — несовершенного вида",
+      "explanation": "Приставка раз- указывает на предел: что сделать?"
+    },
+    {
+      "true_fact": "Глагол «думают» — несовершенного вида",
+      "false_fact": "Глагол «думают» — совершенного вида",
+      "explanation": "Отвечает на вопрос «что делать?» — это несовершенный вид."
+    },
+    {
+      "true_fact": "Глагол «откроем» — совершенного вида",
+      "false_fact": "Глагол «откроем» — несовершенного вида",
+      "explanation": "Действие завершено с результатом: что сделал? — открыл."
+    },
+    {
+      "true_fact": "Глагол «переписываем» — несовершенного вида",
+      "false_fact": "Глагол «переписываем» — совершенного вида",
+      "explanation": "Суффикс -ыва- образует несовершенный вид: что делать?"
+    },
+    {
+      "true_fact": "Глагол «решат» — совершенного вида",
+      "false_fact": "Глагол «решат» — несовершенного вида",
+      "explanation": "Обозначает результат действия: что сделать? — решить."
+    },
+    {
+      "true_fact": "Глагол «стерегли» — несовершенного вида",
+      "false_fact": "Глагол «стерегли» — совершенного вида",
+      "explanation": "Обозначает процесс без указания на предел: что делать?"
+    },
+	{
+      "true_fact": "Глагол «отвечает» — несовершенного вида",
+      "false_fact": "Глагол «отвечает» — совершенного вида",
+      "explanation": "Обозначает процесс без указания на предел: что делать?"
+    },
+	{
+      "true_fact": "Глагол «ответит» — несовершенного вида",
+      "false_fact": "Глагол «ответит» — совершенного вида",
+      "explanation": "Отвечает на вопрос «что сделает?» — это совершенный вид."
+    }
+  ]
+};
+
+(function () {
+  "use strict";
+
+  function byId(id) { return document.getElementById(id); }
+
+  var LIVES = 3, BASE = 100, COMBO_CAP = 8;
+  // Геометрия сцены. X — центры двух полос (% ширины), Y — уровни опоры
+  // (% высоты, снизу). Герой всегда виден на уровне START_Y.
+  var LANE_X = [27, 73], START_Y = 15, STEP_Y = 30;
+  // Слои фона выше сцены (см. .tj-bg-layer) — transform в % считается от
+  // высоты САМОГО слоя, поэтому сдвиг переводим в его масштаб.
+  var LAYER_H = 460, PARALLAX = 0.3;
+  var JUMP_MS = 440, CROUCH_MS = 140, HOLD_OK = 620, HOLD_BAD = 1700, PAN_MS = 540;
+
+  var REDUCED = window.matchMedia &&
+    matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var intro = byId("intro"), game = byId("game"), stage = byId("stage"),
+      world = byId("world"), hero = byId("hero"), bg = byId("bg"),
+      ridge = byId("ridge"), toast = byId("toast"), toastTitle = byId("toastTitle"), toastText = byId("toastText"),
+      altFill = byId("altFill"),
+      scoreEl = byId("score"), comboEl = byId("combo"), livesEl = byId("lives");
+
+  var order = [], idx = 0, score = 0, combo = 0, maxCombo = 0,
+      lives = LIVES, correctCount = 0;
+  var phase = "idle", cur = null, stones = [], baseEl = null, prevBaseEl = null,
+      baseY = START_Y, baseX = 50, summitEl = null, toastTimer = 0;
+
+  byId("title").textContent = GAME.title;
+  byId("subtitle").textContent = GAME.subtitle || "";
+
+  function setPhase(p) { phase = p; game.setAttribute("data-phase", p); }
+
+  function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  /* ─── Камера ────────────────────────────────────────────────────
+     Герой лезет вверх — значит мир едет ВНИЗ ровно на набранную высоту.
+     Дальние вершины отстают: глубина. */
+  function camera(instant) {
+    var shift = baseY - START_Y;            // насколько мир опустить, % высоты
+    if (instant) {
+      world.style.transition = "none"; ridge.style.transition = "none";
+      [].forEach.call(bg.children, function (l) { l.style.transition = "none"; });
+    }
+    world.style.transform = "translateY(" + shift + "%)";
+    [].forEach.call(bg.children, function (l) {
+      l.style.transform = "translateY(" + (shift * PARALLAX * 100 / LAYER_H) + "%)";
+    });
+    // Хребет двигаем через bottom: у него своя высота, и % в transform
+    // считались бы от неё, а не от сцены.
+    ridge.style.bottom = (-shift * PARALLAX) + "%";
+    if (instant) {
+      void world.offsetWidth;
+      world.style.transition = ""; ridge.style.transition = "";
+      [].forEach.call(bg.children, function (l) { l.style.transition = ""; });
+    }
+  }
+
+  /* ─── HUD ───────────────────────────────────────────────────── */
+  function paintLives() {
+    livesEl.innerHTML = "";
+    for (var i = 0; i < LIVES; i++) {
+      var pip = document.createElement("span");
+      pip.className = "tj-pip" + (i < lives ? "" : " is-lost");
+      livesEl.appendChild(pip);
+    }
+  }
+  function paintScore() { scoreEl.textContent = score; }
+  function paintCombo() {
+    comboEl.textContent = "×" + Math.max(1, combo);
+    comboEl.classList.toggle("is-hot", combo >= 2);
+  }
+  // Высотомер: доля пройденной высоты до вершины.
+  function paintAlt() {
+    var total = order.length || 1;
+    altFill.style.height = Math.min(100, Math.round((correctCount / total) * 100)) + "%";
+  }
+
+  function showToast(title, text) {
+    toastTitle.textContent = title;
+    toastText.textContent = text || "";
+    toast.classList.remove("oi-hidden");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(hideToast, HOLD_BAD - 200);
+  }
+  function hideToast() { toast.classList.add("oi-hidden"); }
+
+  /* ─── Постройки ─────────────────────────────────────────────── */
+  function place(el, x, y) {
+    el.style.left = x + "%";
+    el.style.bottom = y + "%";
+  }
+
+  // Стартовый уступ: та же плита, но пустая и широкая — «земля», с которой
+  // начинают. Сразу видно, что герой на опоре, а выбор — над ним.
+  function makeStart() {
+    var el = document.createElement("div");
+    el.className = "tj-stone tj-start";
+    el.style.width = "72%";
+    el.innerHTML = '<span class="tj-slab" style="min-height:70px"></span>';
+    place(el, 50, START_Y);
+    world.appendChild(el);
+    return el;
+  }
+
+  function makeStone(item, side, y) {
+    var el = document.createElement("button");
+    el.type = "button";
+    el.className = "tj-stone";
+    el.setAttribute("data-side", side);
+    el.setAttribute("data-safe", item.safe ? "1" : "0");
+    el.innerHTML = '<span class="tj-slab"></span>';
+    el.querySelector(".tj-slab").textContent = item.text;   // ровно текст — по нему ищет автопроход
+    place(el, LANE_X[side], y);
+    // Кликом коммитим ТОЛЬКО пока плита — активный выбор (есть data-side).
+    // Став опорой, плита теряет data-side и перестаёт реагировать.
+    el.addEventListener("click", function () {
+      var s = el.getAttribute("data-side");
+      if (s !== null) commit(+s);
+    });
+    if (!REDUCED) {
+      el.style.opacity = "0";
+      requestAnimationFrame(function () { el.style.opacity = "1"; });
+    }
+    world.appendChild(el);
+    return el;
+  }
+
+  function makeSummit() {
+    var el = document.createElement("div");
+    el.className = "tj-summit";
+    el.innerHTML =
+      '<span class="tj-summit-label">Вершина</span>' +
+      '<span class="tj-summit-top"></span>' +
+      '<span class="tj-summit-flag"></span>';
+    el.style.left = "50%";
+    el.style.display = "none";
+    world.appendChild(el);
+    return el;
+  }
+
+  // Вершина показывается, когда до неё остаётся один прыжок.
+  function placeSummit() {
+    if (!summitEl) return;
+    var left = Math.max(0, order.length - idx);
+    if (left >= 2) { summitEl.style.display = "none"; return; }
+    summitEl.style.display = "";
+    summitEl.style.bottom = (baseY + (left ? STEP_Y * 2 : STEP_Y)) + "%";
+  }
+
+  function placeHero(x, y) {
+    hero.style.left = x + "%";
+    hero.style.bottom = y + "%";
+  }
+
+  function drop(el) { if (el && el.parentNode) el.parentNode.removeChild(el); }
+
+  /* ─── Шаг ───────────────────────────────────────────────────── */
+  function spawnStep() {
+    cur = GAME.steps[order[idx]];
+    var items = shuffle([
+      {text: cur.true_fact, safe: true},
+      {text: cur.false_fact, safe: false},
+    ]);
+    var y = baseY + STEP_Y;
+    stones = [makeStone(items[0], 0, y), makeStone(items[1], 1, y)];
+    setPhase("choose");
+  }
+
+  function jump(x, y, then) {
+    hero.classList.add("is-crouch");
+    setTimeout(function () {
+      hero.classList.remove("is-crouch");
+      hero.classList.add("is-jump");
+      placeHero(x, y);
+      setTimeout(function () {
+        hero.classList.remove("is-jump");
+        hero.classList.add("is-land");
+        setTimeout(function () { hero.classList.remove("is-land"); }, 460);
+        then();
+      }, JUMP_MS);
+    }, CROUCH_MS);
+  }
+
+  function commit(side) {
+    if (phase !== "choose") return;
+    setPhase("resolve");
+    var stone = stones[side];
+    var safe = stone.getAttribute("data-safe") === "1";
+    var y = baseY + STEP_Y;
+
+    // Ложная плита крошится, когда герой уже в воздухе — срываемся вместе с ней.
+    if (!safe) setTimeout(function () { stone.classList.add("is-crumble"); }, CROUCH_MS + JUMP_MS - 90);
+
+    jump(LANE_X[side], y, function () {
+      if (safe) landSafe(stone, side, y);
+      else landBad(stone, side);
+    });
+  }
+
+  function landSafe(stone, side, y) {
+    stone.classList.add("is-safe");
+    combo = Math.min(COMBO_CAP, combo + 1);
+    maxCombo = Math.max(maxCombo, combo);
+    score += BASE * combo;
+    correctCount++;
+    paintScore(); paintCombo(); paintAlt();
+    Obuchai.step(true, {text: cur.true_fact, explanation: cur.explanation || ""});
+
+    var other = stones[side === 0 ? 1 : 0];
+    setTimeout(function () {
+      // Плита стала опорой — снимаем хуки выбора, гасим текст, опускаем камеру.
+      stone.removeAttribute("data-side");
+      stone.removeAttribute("data-safe");
+      stone.classList.remove("is-safe");
+      stone.classList.add("is-base");
+      other.classList.add("is-gone");
+
+      drop(prevBaseEl);
+      prevBaseEl = baseEl;
+      baseEl = stone;
+      baseY = y; baseX = LANE_X[side];
+      camera();
+
+      setTimeout(function () { drop(other); advance(); }, PAN_MS);
+    }, HOLD_OK);
+  }
+
+  function landBad(stone, side) {
+    var truth = stones[side === 0 ? 1 : 0];
+    truth.classList.add("is-safe");   // показать верную — учит
+    combo = 0;
+    lives--;
+    paintCombo(); paintLives();
+    Obuchai.step(false, {text: cur.true_fact, explanation: cur.explanation || ""});
+    showToast("Правда: " + cur.true_fact, cur.explanation || "");
+    if (!REDUCED) {
+      stage.classList.add("is-shake");
+      setTimeout(function () { stage.classList.remove("is-shake"); }, 400);
+    }
+
+    // Срыв: летим обратно на свою опору.
+    hero.classList.remove("is-land");
+    hero.classList.add("is-fall");
+    placeHero(baseX, baseY);
+
+    setTimeout(function () {
+      drop(stone); drop(truth);
+      hideToast();
+      hero.classList.remove("is-fall");
+      advance();
+    }, HOLD_BAD);
+  }
+
+  function advance() {
+    idx++;
+    placeSummit();
+    if (lives <= 0) return endGame(false);
+    if (idx >= order.length) return finishRun();
+    spawnStep();
+  }
+
+  // Победный прыжок на вершину — награда, ради которой лезли.
+  function finishRun() {
+    if (!summitEl) return endGame(true);
+    setPhase("resolve");
+    jump(baseX, baseY + STEP_Y, function () {
+      baseY += STEP_Y;
+      camera();
+      setTimeout(function () { endGame(true); }, 420);
+    });
+  }
+
+  /* ─── Ввод ──────────────────────────────────────────────────── */
+  document.addEventListener("keydown", function (e) {
+    if (phase !== "choose") return;
+    var k = e.key;
+    if (k === "ArrowLeft" || k === "1" || k === "a" || k === "A") { commit(0); e.preventDefault(); }
+    else if (k === "ArrowRight" || k === "2" || k === "d" || k === "D") { commit(1); e.preventDefault(); }
+  });
+
+  /* ─── Финал ─────────────────────────────────────────────────── */
+  function endGame(win) {
+    setPhase("over");
+    stage.classList.remove("is-running");
+    hideToast();
+    game.classList.add("oi-hidden");
+    var res = document.querySelector("[data-oi-result]");
+    res.classList.remove("oi-hidden");
+    Obuchai.finish();
+
+    var acc = order.length ? Math.round((correctCount / order.length) * 100) : 0;
+    var verdict = document.createElement("div");
+    verdict.className = "tj-verdict " + (win ? "is-win" : "is-lose");
+    verdict.textContent = win ? "Вершина взята!" : "Восхождение окончено";
+
+    var chips = document.createElement("div");
+    chips.className = "tj-result-chips";
+    function chip(label, value, cls) {
+      return '<div class="tj-chip-stat ' + (cls || "") + '">' +
+        '<span class="tj-chip-value">' + value + "</span>" +
+        '<span class="tj-chip-label">' + label + "</span></div>";
+    }
+    chips.innerHTML =
+      chip("очки", score, "is-score") +
+      chip("макс. комбо", "×" + Math.max(1, maxCombo), "") +
+      chip("точность", acc + "%", "");
+
+    var scoreNode = res.querySelector(".oi-result-score");
+    if (scoreNode) {
+      res.insertBefore(verdict, scoreNode);
+      scoreNode.insertAdjacentElement("afterend", chips);
+    } else {
+      res.insertBefore(verdict, res.firstChild);
+      res.appendChild(chips);
+    }
+  }
+
+  /* ─── Запуск ────────────────────────────────────────────────── */
+  function startGame() {
+    // Снести всё лишнее из мира, оставить героя.
+    [].slice.call(world.querySelectorAll(".tj-stone, .tj-summit")).forEach(drop);
+    order = shuffle(GAME.steps.map(function (_, i) { return i; }));
+    idx = 0; score = 0; combo = 0; maxCombo = 0; lives = LIVES; correctCount = 0;
+    baseY = START_Y; baseX = 50; prevBaseEl = null;
+
+    Obuchai.init({total: order.length});
+    intro.classList.add("oi-hidden");
+    document.querySelector("[data-oi-result]").classList.add("oi-hidden");
+    game.classList.remove("oi-hidden");
+    hideToast();
+    if (!REDUCED) stage.classList.add("is-running");
+
+    hero.style.transition = "none";
+    hero.style.opacity = "1";
+    hero.style.left = "50%";
+    hero.style.bottom = START_Y + "%";
+    void hero.offsetWidth;
+    hero.style.transition = "";
+
+    baseEl = makeStart();
+    summitEl = makeSummit();
+    placeSummit();
+    camera(true);
+    paintLives(); paintScore(); paintCombo(); paintAlt();
+    spawnStep();
+  }
+
+  byId("start").addEventListener("click", startGame);
+
+  Obuchai.restart(function () {
+    document.querySelector("[data-oi-result]").classList.add("oi-hidden");
+    startGame();
+  });
+})();
+</script>
+</body>
+</html>
